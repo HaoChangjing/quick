@@ -1,0 +1,124 @@
+package ${cfg.dtoPackage};
+
+#foreach($pkg in ${table.importPackages})
+    #if(${pkg.contains("mybatisplus")})
+    #else
+import ${pkg};
+    #end
+#end
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+#if(${cfg.dtoSwagger})
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+#end
+#if(${entityLombokModel})
+import lombok.Data;
+import lombok.experimental.Accessors;
+#end
+
+/**
+ * <p>
+ * $!{table.comment}
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${entityLombokModel})
+@Data
+@Accessors(chain = true)
+#end
+#if(${cfg.dtoSwagger})
+@ApiModel(value="${entity}DTO对象", description="$!{table.comment}")
+#end
+#if(${superEntityClass})
+public class ${entity}DTO extends ${superEntityClass}#if(${activeRecord})<${entity}DTO>#end {
+#elseif(${activeRecord})
+public class ${entity}DTO extends Model<${entity}DTO> {
+#else
+public class ${entity}DTO implements Serializable {
+#end
+
+    private static final long serialVersionUID = 1L;
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+
+    #if(${field.keyFlag})
+        #set($keyPropertyName=${field.propertyName})
+    #end
+    #if("$!field.comment" != "")
+        #if(${cfg.dtoSwagger})
+    @ApiModelProperty(value = "${field.comment}")
+        #else
+    /**
+     *  ${field.comment}
+     */
+        #end
+    #end
+    #if(${field.type.contains("bigint")})
+        #if(${field.name.equals("id")} || ${field.name.endsWith("_id")} || ${field.name.equals("create_user")} || ${field.name.equals("modify_user")})
+    @JsonSerialize(using= ToStringSerializer.class)
+        #end
+    #end
+    private ${field.propertyType} ${field.propertyName};
+#end
+## ----------  END 字段循环遍历  ----------
+
+#if(!${entityLombokModel})
+    #foreach($field in ${table.fields})
+        #if(${field.propertyType.equals("boolean")})
+            #set($getprefix="is")
+        #else
+            #set($getprefix="get")
+        #end
+
+        public ${field.propertyType} ${getprefix}${field.capitalName}() {
+        return ${field.propertyName};
+    }
+
+        #if(${entityBuilderModel})
+        public ${entity}DTO set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+        #else
+            public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+        #end
+        this.${field.propertyName} = ${field.propertyName};
+        #if(${entityBuilderModel})
+            return this;
+        #end
+    }
+    #end
+#end
+
+#if(${entityColumnConstant})
+    #foreach($field in ${table.fields})
+        public static final String ${field.name.toUpperCase()} = "${field.name}";
+
+    #end
+#end
+#if(${activeRecord})
+    @Override
+    protected Serializable pkVal() {
+    #if(${keyPropertyName})
+        return this.${keyPropertyName};
+    #else
+        return null;
+    #end
+}
+
+#end
+#if(!${entityLombokModel})
+    @Override
+    public String toString() {
+    return "${entity}DTO{" +
+        #foreach($field in ${table.fields})
+            #if($!{foreach.index}==0)
+                    "${field.propertyName}=" + ${field.propertyName} +
+            #else
+                    ", ${field.propertyName}=" + ${field.propertyName} +
+            #end
+        #end
+            "}";
+}
+#end
+}
