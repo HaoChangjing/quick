@@ -51,6 +51,10 @@
             <artifactId>utils-common</artifactId>
         </dependency>
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.saveslave.hhp</groupId>
             <artifactId>redis-common</artifactId>
         </dependency>

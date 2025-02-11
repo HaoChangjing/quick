@@ -1,0 +1,57 @@
+server:
+  port: 8091
+  undertow:
+    buffer-size: 1024
+    direct-buffers: true
+  forward-headers-strategy: native
+nacos:
+  # 测试环境
+  username: qlm-dev
+  password: XwZ8Zg%XczD8
+  server-addr: 10.0.52.100:30000
+  namespace: 44bb54fc-0c43-4319-b5ae-2261a37b9de0
+  # 开发环境
+#  server-addr: 10.0.48.15:8848
+#  namespace: 5561df54-31ab-4d60-913b-7afaff749ae9
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: hhp-sysmanager
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+  cloud:
+    nacos:
+      config:
+        file-extension: yml
+        prefix: ${spring.application.name}
+        server-addr: ${nacos.server-addr}
+        namespace: ${nacos.namespace}
+        group: DEFAULT_GROUP
+        username: ${nacos.username}
+        password: ${nacos.password}
+        shared-configs[0]:
+          data-id: redis.yml
+          group: DEV_GROUP
+          refresh: true
+      discovery:
+        username: ${nacos.username}
+        password: ${nacos.password}
+        server-addr: ${nacos.server-addr}
+        namespace: ${nacos.namespace}
+        group: DEV_GROUP
+
+swagger:
+  enable: true
+  name: 系统管理
+  version: 2.0
+  description: 系统管理
+feign:
+  circuitbreaker:
+    enabled: true
+
+logging:
+  level:
+    root: info

@@ -26,9 +26,7 @@ public class MD5Util {
 	
 	/** 
      * @Description:加密-16位小写 
-     * @author:liuyc 
-     * @time:2016年5月23日 上午11:15:33 
-     */  
+     */
     public static String getMD5Code16(String encryptStr) {  
         return getMD5Code(encryptStr).substring(8, 24);  
     }  
