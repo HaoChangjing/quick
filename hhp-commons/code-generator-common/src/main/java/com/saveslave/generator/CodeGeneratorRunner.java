@@ -14,16 +14,16 @@ public class CodeGeneratorRunner {
     public static void main(String[] args) {
         try {
             MybatisPlusCodeGenerator generator = new MybatisPlusCodeGenerator();
-            generator.DB_URL = "jdbc:mysql://127.0.0.1:3306/mxd?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT";
+            generator.DB_URL = "jdbc:mysql://127.0.0.1:3306/sa-token-db?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT";
             generator.DB_USER_NAME = "root";
             generator.DB_PASSWORD = "root";
-            generator.TABLE_PREFIX = new String[]{"SYS_"};
+            generator.TABLE_PREFIX = new String[]{"sys_"};
             generator.PACKAGE_PARENT = "com.saveslave.hhp";
             generator.SUPER_ENTITY_CLASS = "";
             generator.SUPER_ENTITY_COLUMNS = new String[]{};
             generator.USE_TEMP_OUTPUT = true;
             generator.INCLUDES = new String[]{
-                    "SYS_USER_INFO"
+                    "sys_user"
             };
             generateDefaultCode(generator);
 

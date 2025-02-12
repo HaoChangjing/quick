@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saveslave.sysmanager.service.persistent.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.saveslave.sysmanager.service.persistent.entity.User">
+        <id column="user_id" property="userId" />
+        <result column="password" property="password" />
+        <result column="user_name" property="userName" />
+        <result column="permission_level" property="permissionLevel" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="cellphone_number" property="cellphoneNumber" />
+        <result column="user_type" property="userType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id, password, user_name, permission_level, is_deleted, create_time, update_time, cellphone_number, user_type
+    </sql>
+
+</mapper>
